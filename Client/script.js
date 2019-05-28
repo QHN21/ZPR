@@ -4,7 +4,8 @@ const cells = document.querySelectorAll('.cell');
 var player1 = {actCell: 0, playerCir:document.querySelector("#Pl1")};
 var player2 = {actCell: 0, playerCir:document.querySelector("#Pl2")};
 var possible_moves =[];
-
+var gameboard = [];
+var difficulty = 1;
 //Server connection
 var ws = new WebSocket('ws://localhost:3000');
 
@@ -19,9 +20,12 @@ ws.onclose = function() {
 ws.onmessage = function(message){
   console.log(message.data);
   var gameState = JSON.parse(message.data);
-  player1.actCell = gameState.player1;
-  player2.actCell = gameState.player2;
+  console.log(gameState);
+  player1.actCell = gameState.player_1;
+  player2.actCell = gameState.player_2;
+  gameboard = gameState.gameboard;
   possible_moves = gameState.possible_moves;
+
   drawGame();
 };
 
@@ -31,29 +35,36 @@ function drawGame(){
   document.querySelector(".endgame").style.display = "none";
   moveTurn = 1;
   for(var i = 0; i <cells.length; i++){
-    if(possible_moves[i] == 0){
+    if(gameboard[i] == 1){
       cells[i].style.backgroundColor = "white";
-      cells[i].addEventListener('click',turnClick,false);
     }else{
       cells[i].style.backgroundColor = "black";
     }
+    if(possible_moves[i] == 1){
+
+        cells[i].style.backgroundColor = "yellow";
+        cells[i].addEventListener('click',turnClick,false);
+    }
   }
-  player1.playerCir.style.backgroundColor = "red";
+
+
+
+  player1.playerCir.style.backgroundColor = "green";
   move(cells[player1.actCell],player1);
 
-  player2.playerCir.style.backgroundColor = "green";
+  player2.playerCir.style.backgroundColor = "red";
   move(cells[player2.actCell],player2);
 }
 
 function reset(){
-  var obj = {position: -1}
+  var obj = {position: 0, difficulty: difficulty, reset: 1};
   ws.send(JSON.stringify(obj));
 }
 
 function turnClick(square){
   var position = parseInt(square.target.id);
-  if(possible_moves[position] == 0){
-    var obj = {position: parseInt(square.target.id)}
+  if(possible_moves[position] == 1){
+    var obj = {position: parseInt(square.target.id) , difficulty: difficulty,reset: 0}
     console.log(obj);
     ws.send(JSON.stringify(obj));
   }

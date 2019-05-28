@@ -1,38 +1,10 @@
-//Wasm test
+//WASM
+const Mod = require('./WasmGame.js');
+const WasmGame = Mod({wasmBinaryFile: 'WasmGame.wasm'});
+WasmGame.onRuntimeInitialized = function() {
+    console.log("Wasm Ready");
+};
 
-console.log("Server Running");
-
-console.log("WASM test:");
-
-
-const fs = require('fs');
-const buf = fs.readFileSync('./test.wasm');
-var typedArray = new Uint8Array(buf);
-var myfoo;
-const env = {
-    memoryBase: 0,
-    tableBase: 0,
-    memory: new WebAssembly.Memory({
-      initial: 256
-    }),
-    table: new WebAssembly.Table({
-      initial: 0,
-      element: 'anyfunc'
-    })
-  }
-
-WebAssembly.instantiate(typedArray, {
-  env: env
-}).then(result => {
-  //console.log(util.inspect(result, true, 0));
-  console.log(result.instance.exports.foo(9));
-  myfoo = result.instance.exports.foo;
-
-  console.log(myfoo(12));
-}).catch(e => {
-  // error caught
-  console.log(e);
-});
 
 //Server
 
@@ -44,35 +16,49 @@ var GAMES = [];
 var iterator = 0;
 
 
+console.log("Server Running");
 
 
 wss.on('connection', function(ws) {
     CLIENTS.push(ws);
-    GAMES.push(new Game())
+    //GAMES.push(new Game(CLIENTS.indexOf(ws), WasmGame));
+    WasmGame._new_game(CLIENTS.indexOf(ws),1);
     console.log("CONNECTED");
     console.log(`Number of connected clients: ${CLIENTS.length}`);
-    ws.send(JSON.stringify(GAMES[CLIENTS.indexOf(ws)].gameState()));
+
+ var ptr = WasmGame._game_state(CLIENTS.indexOf(ws));
+
+ var str = WasmGame.UTF8ToString(ptr,500);
+    ws.send(str);
 
     ws.on('message', function(message){
+      console.log("message");
       var obj = JSON.parse(message);
-      if(obj.position != -1){
-        GAMES[CLIENTS.indexOf(ws)].move(obj.position);
+
+      if(obj.reset == 0){
+        //var game_info = GAMES[CLIENTS.indexOf(ws)].move(obj.position);
+          var ptr = WasmGame._wasm_move(CLIENTS.indexOf(ws),obj.position);
+          var str = WasmGame.UTF8ToString(ptr,500);
+          ws.send( str);
+
       }else {
-        GAMES[CLIENTS.indexOf(ws)].reset();
+        var ptr = WasmGame._reset_game(CLIENTS.indexOf(ws),obj.difficulty);
+        var str = WasmGame.UTF8ToString(ptr,500);
+        ws.send( str);
       }
-      ws.send(JSON.stringify(GAMES[CLIENTS.indexOf(ws)].gameState()));
+      //ws.send(game_info);
     });
 
     ws.on('close', function(client){
-      GAMES.splice(CLIENTS.indexOf(client),1)
-      CLIENTS.splice(CLIENTS.indexOf(client),1)
+      WasmGame._delete_game(CLIENTS.indexOf(ws));
+      CLIENTS.splice(CLIENTS.indexOf(ws),1)
       console.log("DISCONNECTED");
       console.log(`Number of connected clients: ${CLIENTS.length}`);
     });
 
     ws.on('error', function(client){
-      GAMES.splice(CLIENTS.indexOf(client),1)
-      CLIENTS.splice(CLIENTS.indexOf(client),1)
+      WasmGame._delete_game(CLIENTS.indexOf(ws));
+      CLIENTS.splice(CLIENTS.indexOf(ws),1)
       console.log("DISCONNECTED");
       console.log(`Number of connected clients: ${CLIENTS.length}`);
     });
