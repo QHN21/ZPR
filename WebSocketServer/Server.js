@@ -9,11 +9,9 @@ WasmGame.onRuntimeInitialized = function() {
 //Server
 
 var WebSocketServer = require("ws").Server;
-const Game = require("./Game/Game.js")
 var wss = new WebSocketServer({ port: 3000});
 var CLIENTS = [];
-var GAMES = [];
-var iterator = 0;
+var maxID = 0;
 
 
 console.log("Server Running");

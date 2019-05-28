@@ -22,17 +22,15 @@
 #include "AI.h"
 
 enum difficulty{
-  easy = 2,
-  medium = 3,
-  hard = 4
+  easy = 1,
+  medium = 2,
+  hard = 3
 };
 
 enum game_state{
   game_ended = 0,
   player_1_moves = 1,
   player_1_deletes_field = 2,
-  player_2_moves = 3,
-  player_2_deletes_field = 4,
 };
 
 class Game{
@@ -40,7 +38,7 @@ private:
   int game_ID;
   int turn;
   int difficulty;
-  int number_of_human_players;
+  int winner;
 
   Board* board;
   Player* player_1;
@@ -51,7 +49,7 @@ public:
     this -> game_ID = game_ID;
     this -> difficulty = difficulty;
     this -> turn = player_1_moves;
-    number_of_human_players = 1;
+    this -> winner = 0;
     board = new Board();
     player_1 = new Player(board, 3, 6);
     player_2 = new Player(board, 3, 0);
@@ -72,34 +70,21 @@ public:
 
       case player_1_deletes_field:
       player_1->hideSquare(x,y);
-      if(number_of_human_players == 1){
-        if((player_2 -> possibleMoves()).size() > 0){
-          int *positionO = ai->minmax(player_2->getPosition(), player_1->getPosition(), difficulty, -1000000, 1000000, board->getFreeSquares());
-          player_2->move(positionO[0], positionO[1])
-          player_2->hideSquare(positionO[2], positionO[3]);
-          turn = player_1_moves;
-        }else{
-          winner = 1;
-          turn = game_ended;
-        }
-        if((player_1 -> possibleMoves()).size() == 0){
-          winner = 2;
-          turn = game_ended;
-        }
+      if((player_2 -> possibleMoves()).size() > 0){
+        int *positionO = ai->minmax(player_2->getPosition(), player_1->getPosition(), difficulty, -1000000, 1000000, board->getFreeSquares());
+        player_2->move(positionO[0], positionO[1]);
+        player_2->hideSquare(positionO[2], positionO[3]);
+        turn = player_1_moves;
       }else{
-        turn = player_2_moves;
+        winner = 1;
+        turn = game_ended;
+      }
+      if((player_1 -> possibleMoves()).size() == 0){
+        winner = 2;
+        turn = game_ended;
       }
       break;
 
-      case player_2_moves:
-        player_2->move(x,y);
-        turn = player_2_deletes_field;
-      break;
-
-      case player_2_deletes_field:
-        player_1->hideSquare(x,y);
-        turn = player_1_moves;
-      break;
     }
     return getGameState();
   }
@@ -112,11 +97,6 @@ public:
     this -> player_1 -> reset(3,6);
     this -> player_2 -> reset(3,0);
     return getGameState();
-  }
-
-
-  int getWinner(){
-    return 0;
   }
 
   const char* getGameState(){
@@ -148,10 +128,10 @@ public:
     }
     sprintf(str, "%s\"possible_moves\": [",str );
     for(int i = 0; i< 49; i++){
-      sprintf(str, (i != 48) ? "%s%d," : "%s%d],",str,(turn == player_1_moves ) ? moves[i] : gameboard[i]);
+      sprintf(str, (i != 48) ? "%s%d," : "%s%d],",str,(turn == player_1_deletes_field ) ?  gameboard[i] : moves[i]);
     }
 
-    sprintf(str, "%s\"winner\": %d}",str, winner );
+    sprintf(str, "%s\"winner\": %d}",str, this->winner );
     return str;
   }
 
