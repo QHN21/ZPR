@@ -5,8 +5,9 @@ var player1 = {actCell: 0, playerCir:document.querySelector("#Pl1")};
 var player2 = {actCell: 0, playerCir:document.querySelector("#Pl2")};
 var possible_moves =[];
 var gameboard = [];
-var difficulty = 1;
+var difficulty = 2;
 //Server connection
+
 var ws = new WebSocket('ws://localhost:3000');
 
 ws.onopen = function() {
@@ -54,6 +55,8 @@ function drawGame(){
 
   player2.playerCir.style.backgroundColor = "red";
   move(cells[player2.actCell],player2);
+
+  test();
 }
 
 function reset(){
@@ -81,3 +84,27 @@ window.onresize = function(event) {
       move(cells[player1.actCell],player1);
       move(cells[player2.actCell],player2);
 };
+
+
+function test(){
+  var r = 0;
+  var p = 0;
+  for(var i = 0 ; i < 49 ; i++)
+    {
+      if(possible_moves[i] == 1){
+        p = i;
+        break;
+      }
+
+          if(i == 48){
+              r = 1;
+          }
+    }
+
+
+    var obj = {position: p , difficulty: difficulty,reset: r}
+    console.log(obj);
+    setTimeout(function(){
+          ws.send(JSON.stringify(obj));
+        }, 500);
+}
