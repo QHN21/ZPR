@@ -47,7 +47,6 @@ const char* Game::resetGame(int difficulty){
 }
 
 const char* Game::getGameState(){
-  char str[500];
   vector<int *> freeSquares;
   vector<int *> possibleMoves;
 
@@ -65,19 +64,19 @@ const char* Game::getGameState(){
       moves[possibleMoves[i][0]+possibleMoves[i][1]*7] = 1;
     }
   }
-  sprintf(str, "{\"player1\": %d,",(player1 ->getPosition())[0]+ (player1 ->getPosition())[1]*7 );
-  sprintf(str, "%s\"player2\": %d,",str,(player2 ->getPosition())[0]+ (player2 ->getPosition())[1]*7 );
+  sprintf(gameStateJSON, "{\"player1\": %d,",(player1 ->getPosition())[0]+ (player1 ->getPosition())[1]*7 );
+  sprintf(gameStateJSON, "%s\"player2\": %d,",gameStateJSON,(player2 ->getPosition())[0]+ (player2 ->getPosition())[1]*7 );
 
 
-  sprintf(str, "%s\"gameboard\": [",str );
+  sprintf(gameStateJSON, "%s\"gameboard\": [",gameStateJSON );
   for(int i = 0; i< 49; i++){
-    sprintf(str, (i != 48) ? "%s%d," : "%s%d],",str,gameboard[i]);
+    sprintf(gameStateJSON, (i != 48) ? "%s%d," : "%s%d],",gameStateJSON,gameboard[i]);
   }
-  sprintf(str, "%s\"possible_moves\": [",str );
+  sprintf(gameStateJSON, "%s\"possible_moves\": [",gameStateJSON );
   for(int i = 0; i< 49; i++){
-    sprintf(str, (i != 48) ? "%s%d," : "%s%d],",str,(turn == player1DeletesField ) ?  gameboard[i] : moves[i]);
+    sprintf(gameStateJSON, (i != 48) ? "%s%d," : "%s%d],",gameStateJSON,(turn == player1DeletesField ) ?  gameboard[i] : moves[i]);
   }
 
-  sprintf(str, "%s\"winner\": %d}",str, this->winner );
-  return str;
+  sprintf(gameStateJSON, "%s\"winner\": %d}",gameStateJSON, this->winner );
+  return gameStateJSON;
 }

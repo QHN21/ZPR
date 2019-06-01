@@ -21,6 +21,8 @@ private:
   int difficulty;
   int winner;
 
+  char gameStateJSON[500];
+
   std::shared_ptr<Board> board;
   Player* player1;
   Player* player2;
