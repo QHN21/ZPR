@@ -18,9 +18,7 @@ public:
       this -> board = board;
     }
 
-    ~AI(){
-      std::cout<<"AI Destroyed"<<std::endl;
-    }
+    ~AI(){}
 
     int *minmax(int *positionO, int *positionP, int depth, int alpha, int beta, vector<int *> freeSquares);
 

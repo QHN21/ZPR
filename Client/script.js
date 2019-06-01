@@ -34,8 +34,8 @@ ws.onmessage = function(message){
   console.log(message.data);
   var gameState = JSON.parse(message.data);
   console.log(gameState);
-  player1.actCell = gameState.player_1;
-  player2.actCell = gameState.player_2;
+  player1.actCell = gameState.player1;
+  player2.actCell = gameState.player2;
   gameboard = gameState.gameboard;
   possible_moves = gameState.possible_moves;
   winner = gameState.winner;

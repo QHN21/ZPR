@@ -14,9 +14,9 @@ public:
   static GamesHandler& getInstance();
   void addNewGame(int gameID, int difficulty);
   const char* resetGame(int gameId, int difficulty);
-  void delete_game(int game_id);
-  const char* move(int game_id, int position);
-  const char* game_state(int game_id);
+  void deleteGame(int gameID);
+  const char* move(int gameID, int position);
+  const char* gameState(int gameID);
 };
 
 #endif

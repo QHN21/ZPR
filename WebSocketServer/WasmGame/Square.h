@@ -25,7 +25,6 @@ public:
     }
 
     ~Square(){
-      //std::cout<<"Square: x = "<< position[0]<<" y = "<< position[1] << " Destroyed" <<std::endl;
       delete position;
     }
 

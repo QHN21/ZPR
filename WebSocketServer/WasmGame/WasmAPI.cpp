@@ -17,25 +17,25 @@
 
 #include "GamesHandler.h"
 
-EM_PORT_API(void) new_game(int game_id, int difficulty) {
-    GamesHandler::getInstance().addNewGame(game_id,difficulty);
+EM_PORT_API(void) new_game(int gameID, int difficulty) {
+    GamesHandler::getInstance().addNewGame(gameID,difficulty);
     return;
 }
 
-EM_PORT_API(const char*) reset_game(int game_id, int difficulty) {
-    return GamesHandler::getInstance().resetGame(game_id,difficulty);
+EM_PORT_API(const char*) resetGame(int gameID, int difficulty) {
+    return GamesHandler::getInstance().resetGame(gameID,difficulty);
 }
 
-EM_PORT_API(void) delete_game(int game_id) {
-    return GamesHandler::getInstance().delete_game(game_id);
-}
-
-
-EM_PORT_API(const char*) wasm_move(int game_id, int position) {
-    return GamesHandler::getInstance().move(game_id,position);
+EM_PORT_API(void) deleteGame(int gameID) {
+    return GamesHandler::getInstance().deleteGame(gameID);
 }
 
 
-EM_PORT_API(const char*) game_state(int game_id) {
-    return GamesHandler::getInstance().game_state(game_id);
+EM_PORT_API(const char*) move(int gameID, int position) {
+    return GamesHandler::getInstance().move(gameID,position);
+}
+
+
+EM_PORT_API(const char*) gameState(int gameID) {
+    return GamesHandler::getInstance().gameState(gameID);
 }

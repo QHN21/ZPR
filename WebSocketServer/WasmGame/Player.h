@@ -23,10 +23,7 @@ public:
         board->getSquares()[(x * 7)+y]->setFree(false);
     }
 
-    ~Player(){
-      //delete this -> board;
-      std::cout<<"Player Destroyed"<<std::endl;
-    }
+    ~Player(){}
 
     bool move(int x, int y);
 

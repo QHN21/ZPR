@@ -12,31 +12,31 @@ void GamesHandler::addNewGame(int gameID, int difficulty){
 const char* GamesHandler::resetGame(int gameId, int difficulty) {
     int gameNumber =0 ;
     while(games[gameNumber]->getID() != gameId) gameNumber++;
-    return games[gameNumber] -> reset_game(difficulty);
+    return games[gameNumber] -> resetGame(difficulty);
 }
 
-void GamesHandler::delete_game(int game_id) {
+void GamesHandler::deleteGame(int gameID) {
     int gameNumber =0;
-    while(games[gameNumber]->getID() != game_id) gameNumber++;
+    while(games[gameNumber]->getID() != gameID) gameNumber++;
     delete games[gameNumber];
     games.erase(games.begin() + gameNumber);
     return;
 }
 
-const char* GamesHandler::move(int game_id, int position) {
+const char* GamesHandler::move(int gameID, int position) {
     int x = position%7;
     int y = position/7;
 
     int gameNumber =0 ;
 
-    while(games[gameNumber]->getID() != game_id) gameNumber++;
+    while(games[gameNumber]->getID() != gameID) gameNumber++;
     return games[gameNumber] -> move(x, y);
 }
 
 
 
-const char* GamesHandler::game_state(int game_id) {
+const char* GamesHandler::gameState(int gameID) {
     int gameNumber =0 ;
-    while(games[gameNumber]->getID() != game_id) gameNumber++;
+    while(games[gameNumber]->getID() != gameID) gameNumber++;
     return games[gameNumber] -> getGameState();
 }

@@ -8,40 +8,39 @@ WasmGame.onRuntimeInitialized = function() {
 class GameCreator{
     constructor() {
       this.maxID = 0;
-      this.CLIENTS = [];
+      this.clients = [];
     }
 
   addGame(ws){
     var difficulty = 2;
     var gameID = this.maxID++;
-    this.CLIENTS.push(new Client(ws, gameID));
-    console.log(gameID);
+    this.clients.push(new Client(ws, gameID));
+    console.log(`Number of connected clients: ${this.clients.length}`);
     WasmGame._new_game(gameID,difficulty);
-    var ptr = WasmGame._game_state(gameID);
+    var ptr = WasmGame._gameState(gameID);
     var str = WasmGame.UTF8ToString(ptr,500);
     return str;
   }
 
   updateGame(ws,obj){
-    var gameID = this.CLIENTS[this.findClientIndex(ws)].getGameID();
+    var gameID = this.clients[this.findClientIndex(ws)].getGameID();
     if(obj.reset == 0){
-      //var game_info = GAMES[CLIENTS.indexOf(ws)].move(obj.position);
-        var ptr = WasmGame._wasm_move(gameID,obj.position);
+        var ptr = WasmGame._move(gameID,obj.position);
         var str = WasmGame.UTF8ToString(ptr,500);
         return str;
     }else {
-      var ptr = WasmGame._reset_game(gameID,obj.difficulty);
+      var ptr = WasmGame._resetGame(gameID,obj.difficulty);
       var str = WasmGame.UTF8ToString(ptr,500);
       return str;
     }
   }
 
   deleteGame(ws){
-    var gameID = this.CLIENTS[this.findClientIndex(ws)].getGameID();
-    WasmGame._delete_game(gameID);
-    this.CLIENTS.splice(this.findClientIndex(ws),1)
+    var gameID = this.clients[this.findClientIndex(ws)].getGameID();
+    WasmGame._deleteGame(gameID);
+    this.clients.splice(this.findClientIndex(ws),1)
     console.log("DISCONNECTED");
-    console.log(`Number of connected clients: ${this.CLIENTS.length}`);
+    console.log(`Number of connected clients: ${this.clients.length}`);
   }
 
 
@@ -50,8 +49,8 @@ class GameCreator{
   }
 
   findClientIndex(ws){
-    for(var i = 0; i < this.CLIENTS.length; i++){
-      if(this.CLIENTS[i].getWebSocket() == ws){
+    for(var i = 0; i < this.clients.length; i++){
+      if(this.clients[i].getWebSocket() == ws){
         return i;
       }
     }
