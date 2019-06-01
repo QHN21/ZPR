@@ -24,6 +24,10 @@ ws.onopen = function() {
 
 ws.onclose = function() {
   console.log("DISCONNECTED");
+    document.querySelector(".endgame").style.display = "none";
+    document.querySelector(".wongame").style.display = "none";
+    document.querySelector(".lostgame").style.display = "none";
+  document.querySelector(".noconnection").style.display = "initial";
 };
 
 ws.onmessage = function(message){
@@ -44,7 +48,7 @@ function drawGame(){
   document.querySelector(".endgame").style.display = "none";
   document.querySelector(".wongame").style.display = "none";
   document.querySelector(".lostgame").style.display = "none";
-
+  document.querySelector(".noconnection").style.display = "none";
   if(winner ==1){
     document.querySelector(".wongame").style.display = "initial";
     winner = 0;
