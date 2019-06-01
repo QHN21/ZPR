@@ -75,12 +75,27 @@
     </table>
     <div class="endgame">
       <div class="endgame-content">
+        New Game
         <div class="close" onclick="close()">+</div>
         <button class="button" onclick="changeDifficulty(1)">Easy</button>
         <button class="button" onclick="changeDifficulty(2)">Medium</button>
         <button class="button" onclick="changeDifficulty(3)">Hard</button>
       </div>
     </div>
+    <div class="wongame">
+      <div class="endgame-content">
+        YOU WON!!!
+          <button class="button" onclick="ok()">OK</button>
+      </div>
+    </div>
+
+    <div class="lostgame">
+      <div class="endgame-content">
+        YOU LOST :(
+          <button class="button" onclick="ok()">OK</button>
+      </div>
+    </div>
+
     <div class="wrap">
       <button class="button" onclick="reset()">Reset</button>
     </div>

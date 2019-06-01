@@ -6,10 +6,13 @@ var player2 = {actCell: 0, playerCir:document.querySelector("#Pl2")};
 var possible_moves =[];
 var gameboard = [];
 var difficulty = 2;
+var winner = 0;
 
 document.querySelector('.close').addEventListener('click', function(){
-  document.querySelector(".endgame").style.display = "none";
+  drawGame();
 });
+
+
 
 //Server connection
 
@@ -31,7 +34,7 @@ ws.onmessage = function(message){
   player2.actCell = gameState.player_2;
   gameboard = gameState.gameboard;
   possible_moves = gameState.possible_moves;
-
+  winner = gameState.winner;
   drawGame();
 };
 
@@ -39,7 +42,17 @@ ws.onmessage = function(message){
 //Game Drawing
 function drawGame(){
   document.querySelector(".endgame").style.display = "none";
-  moveTurn = 1;
+  document.querySelector(".wongame").style.display = "none";
+  document.querySelector(".lostgame").style.display = "none";
+
+  if(winner ==1){
+    document.querySelector(".wongame").style.display = "initial";
+    winner = 0;
+  }
+  if(winner ==2){
+    document.querySelector(".lostgame").style.display = "initial";
+    winner = 0;
+  }
   for(var i = 0; i <cells.length; i++){
     if(gameboard[i] == 1){
       cells[i].style.backgroundColor = "white";
@@ -65,13 +78,17 @@ function drawGame(){
 }
 
 function reset(){
-
   var obj = {position: 0, difficulty: difficulty, reset: 1};
   ws.send(JSON.stringify(obj));
 }
 
 function newGame(){
   document.querySelector(".endgame").style.display = "initial";
+}
+
+function ok(){
+  document.querySelector(".wongame").style.display = "none";
+  document.querySelector(".lostgame").style.display = "none";
 }
 
 
