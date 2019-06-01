@@ -1,4 +1,6 @@
 //WASM
+/**
+*/
 const Mod = require('./WasmGame.js');
 const WasmGame = Mod({wasmBinaryFile: 'WasmGame.wasm'});
 WasmGame.onRuntimeInitialized = function() {

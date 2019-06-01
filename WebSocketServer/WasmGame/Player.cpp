@@ -68,8 +68,8 @@ int *Player::getPosition() {
  * @return - zwraca wszystkie mozliwe do wykonania ruchy dla gracza lub przeciwnika
  */
 vector<int *> Player::possibleMoves() {
-    vector<int *> moves;
-    vector<int*> freeSquares = board->getFreeSquares();
+    vector<int* > moves;
+    vector<int* > freeSquares = board->getFreeSquares();
 
     for(int i = 0; i < freeSquares.size(); i++) {
 

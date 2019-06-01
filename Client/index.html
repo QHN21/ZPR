@@ -74,10 +74,18 @@
       </tr>
     </table>
     <div class="endgame">
-      <div class="text"></div>
+      <div class="endgame-content">
+        <div class="close" onclick="close()">+</div>
+        <button class="button" onclick="changeDifficulty(1)">Easy</button>
+        <button class="button" onclick="changeDifficulty(2)">Medium</button>
+        <button class="button" onclick="changeDifficulty(3)">Hard</button>
+      </div>
     </div>
     <div class="wrap">
       <button class="button" onclick="reset()">Reset</button>
+    </div>
+    <div class="wrap2">
+      <button class="button" onclick="newGame()">New Game</button>
     </div>
     <script src="script.js"></script>
   </body>

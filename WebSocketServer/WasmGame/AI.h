@@ -12,10 +12,14 @@
  */
 class AI {
 private:
-  Board* board;
+  std::shared_ptr<Board> board;
 public:
-    AI(Board* board) {
+    AI(std::shared_ptr<Board> board) {
       this -> board = board;
+    }
+
+    ~AI(){
+      std::cout<<"AI Destroyed"<<std::endl;
     }
 
     int *minmax(int *positionO, int *positionP, int depth, int alpha, int beta, vector<int *> freeSquares);

@@ -6,6 +6,11 @@ var player2 = {actCell: 0, playerCir:document.querySelector("#Pl2")};
 var possible_moves =[];
 var gameboard = [];
 var difficulty = 2;
+
+document.querySelector('.close').addEventListener('click', function(){
+  document.querySelector(".endgame").style.display = "none";
+});
+
 //Server connection
 
 var ws = new WebSocket('ws://localhost:3000');
@@ -49,19 +54,31 @@ function drawGame(){
   }
 
 
-
+  console.log(i);
   player1.playerCir.style.backgroundColor = "green";
   move(cells[player1.actCell],player1);
 
   player2.playerCir.style.backgroundColor = "red";
   move(cells[player2.actCell],player2);
 
-  test();
+  //test();
 }
 
 function reset(){
+
   var obj = {position: 0, difficulty: difficulty, reset: 1};
   ws.send(JSON.stringify(obj));
+}
+
+function newGame(){
+  document.querySelector(".endgame").style.display = "initial";
+}
+
+
+function changeDifficulty(d){
+  this.difficulty = d;
+  console.log(this.difficulty);
+  reset();
 }
 
 function turnClick(square){
@@ -95,13 +112,10 @@ function test(){
         p = i;
         break;
       }
-
           if(i == 48){
               r = 1;
           }
     }
-
-
     var obj = {position: p , difficulty: difficulty,reset: r}
     console.log(obj);
     setTimeout(function(){

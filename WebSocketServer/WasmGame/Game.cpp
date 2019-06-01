@@ -40,7 +40,7 @@ private:
   int difficulty;
   int winner;
 
-  Board* board;
+  std::shared_ptr<Board> board;
   Player* player_1;
   Player* player_2;
   AI* ai;
@@ -50,10 +50,18 @@ public:
     this -> difficulty = difficulty;
     this -> turn = player_1_moves;
     this -> winner = 0;
-    board = new Board();
+    board = std::make_shared<Board>();
     player_1 = new Player(board, 3, 6);
     player_2 = new Player(board, 3, 0);
     ai = new AI(board);
+  }
+
+  ~Game(){
+      //delete this -> board;
+      delete this -> player_1;
+      delete this -> player_2;
+      delete this -> ai;
+      std::cout<<"Game Destroyed"<<std::endl;
   }
 
   int getID(){
@@ -144,6 +152,7 @@ std::vector<Game*> games;
 
 EM_PORT_API(int) new_game(int game_id, int difficulty) {
     games.push_back(new Game(game_id,difficulty));
+    std::cout<<"Game Created"<<std::endl;
     return games.size()-1;
 }
 
@@ -157,6 +166,7 @@ EM_PORT_API(const char*) reset_game(int game_id, int difficulty) {
 EM_PORT_API(int) delete_game(int game_id) {
     int game_number =0;
     while(games[game_number]->getID() != game_id) game_number++;
+    delete games[game_number];
     games.erase(games.begin() + game_number);
     return 0;
 }

@@ -27,6 +27,13 @@ public:
         }
     }
 
+    ~Board(){
+      for (int i = 0; i < squares.size(); i++) {
+          delete squares[i];
+      }
+      std::cout<<"Board Destroyed"<<std::endl;
+    }
+
     vector<int *> getFreeSquares();
 
     bool isLegal(int x, int y);
