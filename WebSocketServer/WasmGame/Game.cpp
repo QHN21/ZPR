@@ -2,12 +2,21 @@
 #include "Game.h"
 
 
-
+/**
+ * @return - zwraca numer ID gry
+ */
 int Game::getID(){
   return gameID;
 }
 
-
+/**
+ * Wykonuje ruch podany od gracza i w zaleznosci od kontekstu
+ * albo przemieszcza pionek gracza, albo usuwa pole i wywołuje algorytm
+ * sztucznej inteligencji
+ * @param x - nr wiersza klikniętego kafelka planszy
+ * @param y - nr kolumny klikniętego kafelka planszy
+ * @return - wskazanie na tablice char, w której znajdują się dane w postaci JSONa
+ */
 const char* Game::move(int x, int y){
   switch(turn){
     case player1Moves:
@@ -22,12 +31,12 @@ const char* Game::move(int x, int y){
       player2->move(positionO[0], positionO[1]);
       player2->hideSquare(positionO[2], positionO[3]);
       turn = player1Moves;
+      if((player1 -> possibleMoves()).size() == 0){
+        winner = 2;
+        turn = game_ended;
+      }
     }else{
       winner = 1;
-      turn = game_ended;
-    }
-    if((player1 -> possibleMoves()).size() == 0){
-      winner = 2;
       turn = game_ended;
     }
     break;
@@ -36,6 +45,11 @@ const char* Game::move(int x, int y){
   return getGameState();
 }
 
+/**
+ * Resetuje gre do stanu początkowego i ustawia poziom trudności podany w argumencie
+ * @param difficulty - poziom trudności podawany jako liczba całkowita (jest to głebokość drzewa poszukiwań)
+ * @return - wskazanie na tablice char, w której znajdują się dane w postaci JSONa
+ */
 const char* Game::resetGame(int difficulty){
   this -> difficulty = difficulty;
   this -> winner = 0;
@@ -46,6 +60,12 @@ const char* Game::resetGame(int difficulty){
   return getGameState();
 }
 
+
+/**
+ * Uaktualnia tablicę gameStateJSON tworząc w niej JSONa przechowującego aktualny stan gry/
+ * Znajdują się tam takie informacje jak pozycje graczy, wolne kafelki, możliwe ruchy, czy zwycięzca.
+ * @return - wskazanie na tablice char, w której znajdują się dane w postaci JSONa
+ */
 const char* Game::getGameState(){
   vector<int *> freeSquares;
   vector<int *> possibleMoves;

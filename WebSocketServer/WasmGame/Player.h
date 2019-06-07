@@ -1,9 +1,6 @@
-//
-// Created by Krzysztof Bednarski on 28.03.2019.
-//
 
-#ifndef UNTITLED_PLAYER_H
-#define UNTITLED_PLAYER_H
+#ifndef __PLAYER_H
+#define __PLAYER_H
 
 #include "Board.h"
 #include <memory>

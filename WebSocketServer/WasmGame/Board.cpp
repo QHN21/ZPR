@@ -1,8 +1,4 @@
-//
-// Created by Krzysztof Bednarski on 28.03.2019.
-//
 
-#include <iostream>
 #include "Board.h"
 
 using namespace std;

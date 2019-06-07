@@ -1,9 +1,6 @@
-//
-// Created by Krzysztof Bednarski on 28.03.2019.
-//
 
-#ifndef UNTITLED_BOARD_H
-#define UNTITLED_BOARD_H
+#ifndef __BOARD_H
+#define __BOARD_H
 
 #include "Square.h"
 #include <vector>

@@ -1,12 +1,15 @@
 #ifndef __GAME_H
 #define __GAME_H
 
-
 #include <vector>
 #include <string>
 #include "Board.h"
 #include "Player.h"
 #include "AI.h"
+
+/**
+ * Klasa odpowidzialne za tworzenie gry i przetrzymywanie jej stanu
+ */
 
 class Game{
 private:
@@ -21,7 +24,7 @@ private:
   int difficulty;
   int winner;
 
-  char gameStateJSON[500];
+  char gameStateJSON[500]; //tablica używana do wyprowadzania danych za pomocą JSONa
 
   std::shared_ptr<Board> board;
   Player* player1;
@@ -48,15 +51,11 @@ public:
 
   int getID();
 
-
   const char* move(int x, int y);
 
   const char* resetGame(int difficulty);
 
   const char* getGameState();
-
-
-
 };
 
 #endif

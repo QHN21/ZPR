@@ -6,6 +6,11 @@
 #include "Game.h"
 
 
+/**
+ * Klasa będąca singletonem.
+ * Jest to Klasa odpowiedzialna, za tworzenie nowyych gier,
+ * usuwanie ich i uaktualnianie na podstawie informacji otrzymanych z WASM API.
+ */
 class GamesHandler{
 private:
   std::vector<Game*> games;

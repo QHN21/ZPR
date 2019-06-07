@@ -1,8 +1,3 @@
-//
-// Created by Krzysztof Bednarski on 28.03.2019.
-//
-
-
 
 #include "Player.h"
 
