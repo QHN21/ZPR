@@ -94,6 +94,8 @@ function drawGame() {
     move(cells[player1.actCell], player1);
     player2.playerCir.style.backgroundColor = "red";
     move(cells[player2.actCell], player2);
+
+    test();
 }
 
 /**
@@ -163,3 +165,25 @@ window.onresize = function (event) {
     move(cells[player1.actCell], player1);
     move(cells[player2.actCell], player2);
 };
+
+/**
+ * Funkcja symulująca rozgrywkę.
+ */
+function test() {
+    var r = 0;
+    var p = 0;
+    for (var i = 0; i < 49; i++) {
+        if (possible_moves[i] == 1) {
+            p = i;
+            break;
+        }
+        if (i == 48) {
+            r = 1;
+        }
+    }
+    var obj = {position: p, difficulty: difficulty, reset: r};
+    console.log(obj);
+    setTimeout(function () {
+        ws.send(JSON.stringify(obj));
+    }, 500);
+}
